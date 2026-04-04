@@ -5,6 +5,10 @@ import Home from './pages/Home'
 import MovieDetail from './pages/MovieDetail'
 import Favorites from './pages/Favorites'
 import NotFound from './pages/NotFound'
+import TopRated from './pages/TopRated'
+import GenreFilter from './pages/GenreFilter'
+import SearchResults from './pages/SearchResults'
+import About from './pages/About'
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
@@ -16,9 +20,7 @@ export default function App() {
     localStorage.setItem('theme', theme)
   }, [theme])
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
-  }
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark')
 
   return (
     <BrowserRouter>
@@ -27,7 +29,11 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/top-rated" element={<TopRated />} />
+        <Route path="/genres" element={<GenreFilter />} />
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

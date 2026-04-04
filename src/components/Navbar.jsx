@@ -44,6 +44,13 @@ export default function Navbar({ theme, toggleTheme }) {
           <Heart size={16} /> Favorites
         </Link>
       </div>
+
+      <div className="nav-links">
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
+          <Link to="/top-rated" className={location.pathname === '/top-rated' ? 'active' : ''}>Top Rated</Link>
+          <Link to="/genres" className={location.pathname === '/genres' ? 'active' : ''}>Genres</Link>
+          <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link>
+      </div>
     </nav>
   )
 }
