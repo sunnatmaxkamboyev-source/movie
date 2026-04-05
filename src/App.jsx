@@ -9,6 +9,7 @@ import TopRated from './pages/TopRated'
 import GenreFilter from './pages/GenreFilter'
 import SearchResults from './pages/SearchResults'
 import About from './pages/About'
+import RecentlyWatched from './pages/RecentlyWatched'
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/genres" element={<GenreFilter />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/about" element={<About />} />
+        <Route path="/watched" element={<RecentlyWatched />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

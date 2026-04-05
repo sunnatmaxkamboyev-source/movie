@@ -1,15 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { Heart, ArrowLeft, Star, Clock, Calendar, User } from 'lucide-react'
+import { Heart, ArrowLeft, Star, Clock, Calendar, User, Download, Play, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
-
-const MOCK_MOVIES = [
-  { id: 1, title: 'Inception', year: '2010', director: 'Christopher Nolan', rating: '8.8', duration: '148 min', genre: 'Sci-Fi, Thriller', description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.', poster: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg' },
-  { id: 2, title: 'Interstellar', year: '2014', director: 'Christopher Nolan', rating: '8.6', duration: '169 min', genre: 'Sci-Fi, Drama', description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanitys survival.', poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg' },
-  { id: 3, title: 'The Dark Knight', year: '2008', director: 'Christopher Nolan', rating: '9.0', duration: '152 min', genre: 'Action, Crime', description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests.', poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg' },
-  { id: 4, title: 'Oppenheimer', year: '2023', director: 'Christopher Nolan', rating: '8.5', duration: '180 min', genre: 'Biography, Drama', description: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.', poster: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg' },
-  { id: 5, title: 'The Matrix', year: '1999', director: 'Wachowski', rating: '8.7', duration: '136 min', genre: 'Sci-Fi, Action', description: 'A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.', poster: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg' },
-  { id: 6, title: 'Dune', year: '2021', director: 'Denis Villeneuve', rating: '8.0', duration: '155 min', genre: 'Sci-Fi, Adventure', description: 'A noble family becomes embroiled in a war for control over the galaxys most valuable asset while its heir becomes troubled by visions of a dark future.', poster: 'https://image.tmdb.org/t/p/w500/d5NXSklpcvkD6xB32bn2V5dIo5g.jpg' },
-]
+import { MOCK_MOVIES } from '../data/movies'
+import MovieCard from '../components/MovieCard'
 
 export default function MovieDetail() {
   const { id } = useParams()
@@ -21,6 +14,22 @@ export default function MovieDetail() {
     return favs.some(f => f.id === Number(id))
   })
 
+  const [userRating, setUserRating] = useState(() => {
+    const ratings = JSON.parse(localStorage.getItem('ratings') || '{}')
+    return ratings[id] || 0
+  })
+
+  const [hoverRating, setHoverRating] = useState(0)
+  const [showTrailer, setShowTrailer] = useState(false)
+
+  useEffect(() => {
+    if (!movie) return
+    const watched = JSON.parse(localStorage.getItem('watched') || '[]')
+    const filtered = watched.filter(w => w.id !== movie.id)
+    const updated = [movie, ...filtered].slice(0, 10)
+    localStorage.setItem('watched', JSON.stringify(updated))
+  }, [movie])
+
   const toggleFavorite = () => {
     const favs = JSON.parse(localStorage.getItem('favorites') || '[]')
     const updated = isFavorite
@@ -29,6 +38,22 @@ export default function MovieDetail() {
     localStorage.setItem('favorites', JSON.stringify(updated))
     setIsFavorite(!isFavorite)
   }
+
+  const handleRating = (star) => {
+    const ratings = JSON.parse(localStorage.getItem('ratings') || '{}')
+    ratings[id] = star
+    localStorage.setItem('ratings', JSON.stringify(ratings))
+    setUserRating(star)
+  }
+
+  const handleDownload = () => {
+    alert('Backend ulangandan so\'ng yuklab olish ishlaydi! 🎬')
+  }
+
+  const similarMovies = MOCK_MOVIES.filter(m =>
+    m.id !== movie?.id &&
+    m.genre.split(', ').some(g => movie?.genre.includes(g))
+  ).slice(0, 4)
 
   if (!movie) return (
     <div className="detail-notfound">
@@ -39,10 +64,7 @@ export default function MovieDetail() {
 
   return (
     <div className="detail-page">
-      <div
-        className="detail-bg"
-        style={{ backgroundImage: `url(${movie.poster})` }}
-      />
+      <div className="detail-bg" style={{ backgroundImage: `url(${movie.poster})` }} />
       <div className="detail-overlay" />
 
       <div className="detail-content">
@@ -71,16 +93,85 @@ export default function MovieDetail() {
 
             <p className="detail-desc">{movie.description}</p>
 
-            <button
-              className={`detail-fav-btn ${isFavorite ? 'active' : ''}`}
-              onClick={toggleFavorite}
-            >
-              <Heart size={18} fill={isFavorite ? '#ff6b8a' : 'none'} />
-              {isFavorite ? 'Saved to Favorites' : 'Add to Favorites'}
-            </button>
+            {/* RATING */}
+            <div className="rating-section">
+              <p className="rating-label">Your Rating:</p>
+              <div className="stars-wrap">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map(star => (
+                  <button
+                    key={star}
+                    className={`star-btn ${star <= (hoverRating || userRating) ? 'active' : ''}`}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => handleRating(star)}
+                  >
+                    ★
+                  </button>
+                ))}
+                {userRating > 0 && (
+                  <span className="rating-val">{userRating} / 10</span>
+                )}
+              </div>
+            </div>
+
+            {/* BUTTONS */}
+            <div className="detail-btns">
+              <button className="trailer-btn" onClick={() => setShowTrailer(true)}>
+                <Play size={17} fill="currentColor" /> Watch Trailer
+              </button>
+              <button className={`detail-fav-btn ${isFavorite ? 'active' : ''}`} onClick={toggleFavorite}>
+                <Heart size={17} fill={isFavorite ? '#ff6b8a' : 'none'} />
+                {isFavorite ? 'Saved' : 'Favorite'}
+              </button>
+              <button className="download-btn" onClick={handleDownload}>
+                <Download size={17} /> Download
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* SIMILAR MOVIES */}
+        {similarMovies.length > 0 && (
+          <div className="similar-section">
+            <h2 className="similar-title">Similar <span>Movies</span></h2>
+            <div className="similar-grid">
+              {similarMovies.map(m => (
+                <MovieCard
+                  key={m.id}
+                  movie={m}
+                  isFavorite={!!JSON.parse(localStorage.getItem('favorites') || '[]').find(f => f.id === m.id)}
+                  onToggleFavorite={(mov) => {
+                    const favs = JSON.parse(localStorage.getItem('favorites') || '[]')
+                    const exists = favs.find(f => f.id === mov.id)
+                    const updated = exists ? favs.filter(f => f.id !== mov.id) : [...favs, mov]
+                    localStorage.setItem('favorites', JSON.stringify(updated))
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* TRAILER MODAL */}
+      {showTrailer && (
+        <div className="trailer-modal" onClick={() => setShowTrailer(false)}>
+          <div className="trailer-box" onClick={e => e.stopPropagation()}>
+            <button className="trailer-close" onClick={() => setShowTrailer(false)}>
+              <X size={22} />
+            </button>
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed?search=${movie.title}+official+trailer&autoplay=1`}
+              title="Trailer"
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

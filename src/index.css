@@ -906,3 +906,144 @@ body {
   border-top: 1px solid var(--border);
   padding-top: 2rem;
 }
+
+
+/* RATING STARS */
+.rating-section {
+  margin-bottom: 1.5rem;
+}
+
+.rating-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.stars-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: rgba(255,255,255,0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s, transform 0.15s;
+  line-height: 1;
+}
+.star-btn.active { color: #f5c518; }
+.star-btn:hover { transform: scale(1.2); }
+
+.rating-val {
+  font-size: 13px;
+  color: #f5c518;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+/* BUTTONS ROW */
+.detail-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.trailer-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.2s;
+}
+.trailer-btn:hover { opacity: 0.85; }
+
+.detail-fav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,107,138,0.1);
+  border: 1px solid rgba(255,107,138,0.3);
+  color: #ff6b8a;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.detail-fav-btn:hover { background: rgba(255,107,138,0.2); }
+.detail-fav-btn.active {
+  background: rgba(255,107,138,0.2);
+  border-color: #ff6b8a;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.2s;
+}
+.download-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* TRAILER MODAL */
+.trailer-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.trailer-box {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 480px;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.trailer-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.trailer-close:hover { background: rgba(255,255,255,0.2); }
