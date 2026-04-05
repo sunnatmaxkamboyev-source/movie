@@ -1,24 +1,19 @@
-import axios from "axios";
+const BASE_URL = 'http://localhost:5000/api'
 
-const API_KEY = "SENING_API_KEY";
-const BASE_URL = "https://www.omdbapi.com/";
+export const getPopularMovies = async () => {
+  const res = await fetch(`${BASE_URL}/movies/popular`)
+  const data = await res.json()
+  return data.movies
+}
 
-export const searchMovies = async (query) => {
-  const res = await axios.get(BASE_URL, {
-    params: {
-      apikey: API_KEY,
-      s: query,
-    },
-  });
-  return res.data;
-};
+export const searchMovies = async (query, page = 1) => {
+  const res = await fetch(`${BASE_URL}/movies/search?q=${query}&page=${page}`)
+  const data = await res.json()
+  return data
+}
 
-export const getMovieDetail = async (id) => {
-  const res = await axios.get(BASE_URL, {
-    params: {
-      apikey: API_KEY,
-      i: id,
-    },
-  });
-  return res.data;
-};
+export const getMovieById = async (id) => {
+  const res = await fetch(`${BASE_URL}/movies/${id}`)
+  const data = await res.json()
+  return data
+}

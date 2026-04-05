@@ -1047,3 +1047,178 @@ body {
   transition: background 0.2s;
 }
 .trailer-close:hover { background: rgba(255,255,255,0.2); }
+
+
+
+.detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+  color: var(--text-muted);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(91,170,255,0.2);
+  border-top-color: #5baaff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+
+.download-modal-box {
+  position: relative;
+  background: #0f0f1a;
+  border: 1px solid rgba(100,180,255,0.15);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.download-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-align: center;
+}
+
+.download-desc {
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  text-align: center;
+}
+
+.download-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.download-option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  border: none;
+  transition: opacity 0.2s;
+  width: 100%;
+}
+.download-option-btn:hover { opacity: 0.85; }
+
+.download-option-btn.youtube {
+  background: #ff0000;
+  color: #fff;
+}
+
+.download-option-btn.imdb {
+  background: #f5c518;
+  color: #000;
+}
+
+.download-option-btn.disabled {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.4);
+  cursor: not-allowed;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.download-option-btn.disabled:hover { opacity: 1; }
+
+.download-option-btn.archive {
+  background: rgba(0, 180, 120, 0.15);
+  border: 1px solid rgba(0, 180, 120, 0.3);
+  color: #00b478;
+}
+.download-option-btn.archive:hover {
+  background: rgba(0, 180, 120, 0.25);
+}
+
+
+
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(91,170,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 1px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stats-footer {
+  text-align: center;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.stats-footer span {
+  color: var(--accent);
+  font-weight: 500;
+}

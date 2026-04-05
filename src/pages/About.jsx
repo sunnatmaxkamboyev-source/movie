@@ -1,38 +1,73 @@
-import { Film, Code2, Mail, Users } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Film, Users, Star, TrendingUp, Database, Clock } from 'lucide-react'
 
 export default function About() {
+  const [stats, setStats] = useState({
+    totalMovies: 0,
+    totalFavorites: 0,
+    totalWatched: 0,
+    totalRatings: 0,
+    avgRating: 0,
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]')
+    const watched = JSON.parse(localStorage.getItem('watched') || '[]')
+    const ratings = JSON.parse(localStorage.getItem('ratings') || '{}')
+    const ratingValues = Object.values(ratings)
+    const avg = ratingValues.length > 0
+      ? (ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length).toFixed(1)
+      : 0
+
+    setStats({
+      totalMovies: 1000000,
+      totalFavorites: favorites.length,
+      totalWatched: watched.length,
+      totalRatings: ratingValues.length,
+      avgRating: avg,
+    })
+    setLoading(false)
+  }, [])
+
+  const statCards = [
+    { icon: <Database size={28} color="var(--accent)" />, label: 'Movies in Database', value: '1,000,000+' },
+    { icon: <Film size={28} color="#f5c518" />, label: 'Your Watched', value: stats.totalWatched },
+    { icon: <Star size={28} color="#ff6b8a" />, label: 'Your Favorites', value: stats.totalFavorites },
+    { icon: <TrendingUp size={28} color="#00b478" />, label: 'Your Ratings', value: stats.totalRatings },
+    { icon: <Users size={28} color="var(--accent)" />, label: 'Avg Your Rating', value: stats.avgRating > 0 ? stats.avgRating + ' / 10' : 'N/A' },
+    { icon: <Clock size={28} color="#f5c518" />, label: 'API Response', value: '< 1sec' },
+  ]
+
   return (
     <div className="about-page">
       <div className="about-hero">
         <Film size={52} color="var(--accent)" />
-        <h1 className="home-title">About <span>CineX</span></h1>
+        <h1 className="home-title">CINE<span>X</span> Stats</h1>
         <p className="about-desc">
-          CineX is a modern movie search app built with React.js.
-          Discover, explore, and save your favorite movies!
+          Your personal movie statistics and platform overview.
         </p>
       </div>
 
-      <div className="about-cards">
-        <div className="about-card">
-          <Users size={28} color="var(--accent)" />
-          <h3>The Team</h3>
-          <p>Built by 4-guruh students as a frontend project. Backend powered by a RESTful API.</p>
+      {loading ? (
+        <div className="detail-loading">
+          <div className="loading-spinner" />
         </div>
-        <div className="about-card">
-          <Film size={28} color="var(--accent)" />
-          <h3>Tech Stack</h3>
-          <p>React.js, React Router, Lucide Icons, CSS Variables, LocalStorage.</p>
+      ) : (
+        <div className="stats-grid">
+          {statCards.map((card, i) => (
+            <div key={i} className="stat-card">
+              <div className="stat-icon">{card.icon}</div>
+              <div className="stat-value">{card.value}</div>
+              <div className="stat-label">{card.label}</div>
+            </div>
+          ))}
         </div>
-        <div className="about-card">
-          <Code2 size={28} color="var(--accent)" />
-          <h3>Open Source</h3>
-          <p>This project is made for educational purposes. Feel free to explore the code!</p>
-        </div>
-      </div>
+      )}
 
-      <div className="about-contact">
-        <Mail size={20} color="var(--accent)" />
-        <span>Sunnat & Akobir — 4-guruh</span>
+      <div className="stats-footer">
+        <p>Data is stored locally on your device.</p>
+        <p>Powered by <span>MoviesDatabase API</span> & <span>MongoDB Atlas</span></p>
       </div>
     </div>
   )
